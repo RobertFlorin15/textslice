@@ -24,7 +24,7 @@ fn main() {
         match word1 {
             "first" => println!("{}", get_first(input_without_first_word)),
             "last" => println!("{}", get_last(input_without_first_word)),
-            // "longest" => get_longest(),
+            "longest" => println!("{}", longest(input_without_first_word)),
             // "count" => count(),
             // "trim" => trim(),
             // "preview" => preview(), //the only one with 2 parameters
@@ -65,6 +65,33 @@ fn get_last(s: &str) -> &str {
         }
     }
     &s[..]
+}
 
+fn longest(s: &str) -> &str {
+    let bytes = s.as_bytes();
+    // 0 -> first letter | 1 -> last letter
+    let mut word: (usize, usize) = (0, 0);
+    let mut counter = 0;
+    let mut first_letter = 0;
+    for(i, &item) in bytes.iter().enumerate() {
+        if item != b' ' && item != b'\n' {
+            if counter == 0 {
+                first_letter = i;
+            }
+            counter += 1;
+        }
+        else {
+            if (word.1 - word.0) < counter {
+                word = (first_letter, first_letter + counter);
+            }
+            counter = 0;
+        }
+    }
+
+    if (word.1 - word.0) < counter {
+        word = (first_letter, first_letter + counter);
+    }
+
+    &s[word.0..word.1]
 }
 
