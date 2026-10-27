@@ -16,17 +16,31 @@ fn main() {
             .read_line(&mut input)
             .expect("Failed to read line");
 
-        match &str {
-            "first" => getFirst(),
-            "last" => getLast(),
-            "longest" => getLongest(),
-            "count" => count(),
-            "trim" => trim(),
-            "preview" => preview(), //the only one with 2 parameters
-            "squeeze" => squeeze(),
-            "reverse" => reverse(),
-            "quit" => break,
-            _ => println!("Retry!"),
+        println!("First word: {}", first_word(&input));
+
+        // match &str {
+        //     "first" => get_first(),
+        //     "last" => get_last(),
+        //     "longest" => get_longest(),
+        //     "count" => count(),
+        //     "trim" => trim(),
+        //     "preview" => preview(), //the only one with 2 parameters
+        //     "squeeze" => squeeze(),
+        //     "reverse" => reverse(),
+        //     "quit" => break,
+        //     _ => println!("Retry!"),
+        // }
+        input = String::from("");
+    }
+}
+
+fn first_word(s: &str) -> &str {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[..i];
         }
     }
+    &s[..]
 }
