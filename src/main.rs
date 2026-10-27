@@ -19,14 +19,14 @@ fn main() {
             .expect("Failed to read line");
 
         let (word1, dimension) = first_word(&input);
-        let input_without_first_word = &input[dimension + 1..input.len() - 1];
+        let input_without_first_word = &input[dimension + 1..input.len() - 1].trim();
 
         match word1 {
             "first" => println!("{}", get_first(input_without_first_word)),
             "last" => println!("{}", get_last(input_without_first_word)),
             "longest" => println!("{}", longest(input_without_first_word)),
-            // "count" => count(),
-            // "trim" => trim(),
+            "count" => println!("{}", count(input_without_first_word)),
+            "trim" => println!("{}", trim(*input_without_first_word)),
             // "preview" => preview(), //the only one with 2 parameters
             // "squeeze" => squeeze(),
             // "reverse" => reverse(),
@@ -95,3 +95,30 @@ fn longest(s: &str) -> &str {
     &s[word.0..word.1]
 }
 
+fn count(s: &str) -> usize {
+    let mut number = 0;
+
+    let bytes = s.as_bytes();
+
+    for(_i, &item) in bytes.iter().enumerate() {
+        if (item == b' ' && item + 1 != b' ') || (item + 1 == b' ' && item != b' ') {
+            number += 1;
+        }
+
+    }
+    //trim added
+    number + 1
+}
+
+fn trim (s: &str) -> String {
+    let mut s2: String = String::from("");
+    let bytes = s.as_bytes();
+
+    for(_i, &item) in bytes.iter().enumerate() {
+        if item != b' ' {
+            s2.push(item as char);
+        }
+    }
+
+    s2
+}
