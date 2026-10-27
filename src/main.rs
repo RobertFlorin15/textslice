@@ -12,35 +12,48 @@ fn main() {
     let mut input = String::new();
 
     loop {
+        input.clear();
+        
         io::stdin()
             .read_line(&mut input)
             .expect("Failed to read line");
 
-        println!("First word: {}", first_word(&input));
+        let (word1, dimension) = first_word(&input);
 
-        // match &str {
-        //     "first" => get_first(),
-        //     "last" => get_last(),
-        //     "longest" => get_longest(),
-        //     "count" => count(),
-        //     "trim" => trim(),
-        //     "preview" => preview(), //the only one with 2 parameters
-        //     "squeeze" => squeeze(),
-        //     "reverse" => reverse(),
-        //     "quit" => break,
-        //     _ => println!("Retry!"),
-        // }
-        input = String::from("");
+        match word1 {
+            "first" => println!("{}", get_first(&input[(dimension + 1)..])),
+            // "last" => get_last(),
+            // "longest" => get_longest(),
+            // "count" => count(),
+            // "trim" => trim(),
+            // "preview" => preview(), //the only one with 2 parameters
+            // "squeeze" => squeeze(),
+            // "reverse" => reverse(),
+            "quit\n" => break,
+            _ => println!("Retry!")
+        }
+
     }
 }
 
-fn first_word(s: &str) -> &str {
+fn first_word(s: &str) -> (&str, usize) {
     let bytes = s.as_bytes();
-
     for (i, &item) in bytes.iter().enumerate() {
         if item == b' ' {
-            return &s[..i];
+            return (&s[..i], i);
+        }
+    }
+    (&s[..], s.len())
+}
+
+fn get_first(s: &str) -> &str {
+    let bytes = s.as_bytes();
+    for(i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[..i]
         }
     }
     &s[..]
 }
+
+
