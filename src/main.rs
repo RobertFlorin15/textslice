@@ -1,4 +1,4 @@
-use std::io;
+use std::{io};
 
 fn main() {
     println!("This is an interactive loop!");
@@ -13,16 +13,17 @@ fn main() {
 
     loop {
         input.clear();
-        
+
         io::stdin()
             .read_line(&mut input)
             .expect("Failed to read line");
 
         let (word1, dimension) = first_word(&input);
+        let input_without_first_word = &input[dimension + 1..input.len() - 1];
 
         match word1 {
-            "first" => println!("{}", get_first(&input[(dimension + 1)..])),
-            // "last" => get_last(),
+            "first" => println!("{}", get_first(input_without_first_word)),
+            "last" => println!("{}", get_last(input_without_first_word)),
             // "longest" => get_longest(),
             // "count" => count(),
             // "trim" => trim(),
@@ -47,7 +48,7 @@ fn first_word(s: &str) -> (&str, usize) {
 }
 
 fn get_first(s: &str) -> &str {
-    let bytes = s.as_bytes();
+    let bytes: &[u8] = s.as_bytes();
     for(i, &item) in bytes.iter().enumerate() {
         if item == b' ' {
             return &s[..i]
@@ -56,4 +57,14 @@ fn get_first(s: &str) -> &str {
     &s[..]
 }
 
+fn get_last(s: &str) -> &str {
+    let bytes: &[u8] = s.as_bytes();
+    for(i, &item) in bytes.iter().enumerate().rev() {
+        if item == b' ' {
+            return &s[i + 1..]
+        }
+    }
+    &s[..]
+
+}
 
