@@ -10,36 +10,48 @@ fn main() {
     );
 
     let mut input = String::new();
+    let mut input_valid: bool;
 
     loop {
         input.clear();
+        input_valid = false;
 
         io::stdin()
             .read_line(&mut input)
             .expect("Failed to read line");
 
         let (word1, dimension) = first_word(&input);
-        let input_without_first_word = &input[dimension + 1..input.len() - 1];
+        if dimension >= 4 {
+            input_valid = true;
+        }
 
-        match word1 {
-            "first" => println!("{}", get_first(trim(input_without_first_word))),
-            "last" => println!("{}", get_last(trim(input_without_first_word))),
-            "longest" => println!("{}", longest(trim(input_without_first_word))),
-            "count" => println!("{}", count(trim(input_without_first_word))),
-            "trim" => println!("{}", trim(input_without_first_word)),
-            "preview" => {
-                let (string, bool) = preview(input_without_first_word);
-                if bool == true {
-                    println!("{string}...")
-                }
-                else {
-                    continue;
-                }
-            }, //the only one with 2 parameters
-            "squeeze" => println!("{}", squeeze(trim(input_without_first_word))),
-            "reverse" => println!("{}", reverse(trim(input_without_first_word))),
-            "quit\n" => break,
-            _ => println!("Retry!"),
+        if input_valid == true {
+            let input_without_first_word = &input[dimension + 1..input.len() - 1];
+
+            match word1 {
+                "first" => println!("{}", get_first(trim(input_without_first_word))),
+                "last" => println!("{}", get_last(trim(input_without_first_word))),
+                "longest" => println!("{}", longest(trim(input_without_first_word))),
+                "count" => println!("{}", count(trim(input_without_first_word))),
+                "trim" => println!("{}", trim(input_without_first_word)),
+                "preview" => {
+                    let (string, bool) = preview(input_without_first_word);
+                    if bool == true {
+                        println!("{string}...")
+                    }
+                    else {
+                        continue;
+                    }
+                }, //the only one with 2 parameters
+                "squeeze" => println!("{}", squeeze(trim(input_without_first_word))),
+                "reverse" => println!("{}", reverse(trim(input_without_first_word))),
+                "quit\n" => break,
+                _ => println!("Retry!"),
+            }
+        }
+
+        else {
+            println!("Input invalid!");
         }
     }
 }
@@ -129,7 +141,7 @@ fn number_from_char(s: u8) -> usize{
     (s - '0' as u8) as usize
 }
 
-fn preview(s: &str) -> (&str, bool) {
+fn preview( s: &str) -> (&str, bool) {
     let bytes = s.as_bytes();
     let mut number: usize = 0;
     for (i, &item) in bytes.iter().enumerate() {
